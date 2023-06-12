@@ -1,0 +1,204 @@
+{{ meta }}
+
+{% raw %}
+    
+% --- Document begin - begin ---
+    
+\input opmac
+%\input opmac-bib
+\input tikz
+%\input chelvet
+\input cpalatin
+\margins/1 a4 (3,3,3,3)cm % (l, r, t, b)
+\typosize[12/16.5]
+%\parindent=10pt
+%\hyperlinks \Blue\Blue
+\def\intthook{\localcolor\Red}
+\def\pages{5}
+\def\title{TZ}
+\def\titlelong{Technická zpráva}
+\def\sskip{\hskip.25em\relax}
+\chyph
+\hyperlinks{\Blue}{\Black}
+
+\def\paramrow{\vskip1mm\hrule\vskip1mm\relax}
+
+\def\eon{e\raise.4ex\hbox{.}on}
+\def\date#1.#2.#3{#1.\hskip0.3em#2.\hskip0.3em#3}
+%\def\rowdelim{\vskip1mm\hrule\vskip1mm}
+\def\contractname{pve}
+\def\tblsize{0.8\hsize}
+\def\mmsq{$\rm mm^2$}
+\def\x{$\times$}
+\def\itembull{\noindent\item{$\bullet$}}
+\newcount\tblnr
+\def\tbltitle#1{\rowdelim\noindent\advance\tblnr by 1{\hfill\it Tabulka \the\tblnr : #1.\hfill}}
+
+% --- Definice tabulek ---
+
+\def\rowdelim{\vskip1mm{\localcolor\Grey\hrule}\vskip1mm}
+\def\rowdelimred{\vskip1mm{\localcolor\Red\hrule}\vskip1mm}
+    
+\def\rowbegin{}
+\def\tblbegin{
+    \midinsert
+    \vskip 1ex\relax
+}
+\def\tblend#1#2{
+    \label[#1]\caption/t #2
+    \endinsert
+}
+
+% buňka pro jednotky
+\def\unitcolsize{3em}
+\def\unitcol#1{\vbox{\hbox to\unitcolsize{#1\hfill}}}
+
+% Buňka pro label
+\def\labelcolsize{6em}
+\def\labelcol#1{\vbox{\hbox to\labelcolsize{\tt\hfill{}#1\sskip}}}
+
+% Buňka pro fyzikalní jednotku a hodnotu: unit, value
+\def\unitvaluecolsize{7em}
+    \def\unitvaluecol#1#2{\vbox{\hbox to\unitvaluecolsize{#1\hfill{}#2}}}
+
+% Radek pro tri hodnoty: popis, hodnota1, hodnota2, hodnota3, jednotka
+\newdimen\valuethreecolsize
+\valuethreecolsize=0.99\hsize
+\advance\valuethreecolsize by-\unitvaluecolsize\relax
+\advance\valuethreecolsize by-\unitvaluecolsize\relax
+\advance\valuethreecolsize by-\unitcolsize\relax
+\def\valuerowthree#1#2#3#4#5{%
+    \rowbegin\hbox{\strut{}%
+        \vbox{\hbox to\valuethreecolsize{#1\hfill{}#2}}%
+        \unitvaluecol{#5}{#3}%
+        \unitvaluecol{#5}{#4}%
+        \unitcol{#5}%
+    }
+}
+
+% Radek pro jednu hodnotu: popis, hodnota, jednotka
+\newdimen\valuecolsize
+\valuecolsize=\valuethreecolsize
+\advance\valuecolsize by\unitvaluecolsize\relax
+%\advance\valuecolsize by-\unitcolsize\relax
+\def\valuerow#1#2#3{%
+    \rowbegin\hbox{\strut{}%
+        \vbox{\hbox to\valuecolsize{#1\hfill{}#2}}%
+        \unitcol{#3}%
+    }
+}
+
+% Udaje na titulní stránce: key, hodnota
+\def\titleboxrow#1#2{
+    \rowbegin\hbox{\strut
+        \vbox{\hbox to0.3\hsize{\hfill{}#1}}
+        \vbox{\hbox to0.6\hsize{#2\hfill}}
+    }
+}
+
+% Tabulka výkazu výměr
+\newdimen\vvcolsize
+\vvcolsize=0.99\hsize
+\advance\vvcolsize by-\labelcolsize
+\advance\vvcolsize by-\unitcolsize
+\advance\vvcolsize by-0.4\hsize
+\def\vvrow#1#2#3#4#5#6{%
+    \rowbegin\hbox{\strut{}%
+        \labelcol{#1}%
+        \vbox{\hbox to0.4\hsize{#2\hfill{}#3\sskip}}%
+        \vbox{\hbox to\vvcolsize{#4\hfill{}#5\sskip}}%
+        \unitcol{#6}%
+    }
+}
+
+\newdimen\vvcollongsize
+\vvcollongsize=0.99\hsize
+\advance\vvcollongsize by-\labelcolsize
+\def\vvrowlong#1#2#3#4#5#6{%
+    \rowbegin\hbox{\strut{}%
+        \labelcol{#1}%
+        \vbox{\hbox to\vvcollongsize{#2\hfill}}}
+    \vvrow{}{}{#3}{#4}{#5}{#6}
+}
+
+% Historie revizí
+\newdimen\hpcolsize
+\hpcolsize=0.99\hsize
+\advance\hpcolsize by-2em
+\advance\hpcolsize by-7em
+\def\hprow#1#2#3{%
+    \rowbegin\hbox{\strut{}%
+        \vbox{\hbox to2em{#1\hfill}}
+        \vbox{\hbox to7em{\hfill{}#2~}}
+        \vtop{\hbox to\hpcolsize{\hsize=\hpcolsize\relax\vtop{\noindent{}#3\strut\hfill}}}
+    }
+}
+
+\def\invprotect#1#2#3#4#5{%
+    \rowbegin\hbox{\strut
+        \vbox{\hbox to0.70\hsize{#1\hfill{}#2}}
+        \vbox{\hbox to0.15\hsize{#3\hfill{}#4}}
+        \vbox{\hbox to0.15\hsize{#5\hfill{}}}
+    }
+}
+
+\def\wholerow#1{%
+    \rowbegin\hbox{\strut{}%
+       \vbox{\hbox to\hsize{#1}}
+    }
+}
+    
+% Kabelový seznam
+\newdimen\wlcolsize
+\wlcolsize=0.99\hsize
+\advance\wlcolsize by-\labelcolsize
+\advance\wlcolsize by-\unitcolsize
+\advance\wlcolsize by-\unitcolsize
+\advance\wlcolsize by-0.3\hsize
+\divide\wlcolsize by2
+\def\wlrow#1#2#3#4#5#6{%
+    \rowbegin\hbox{\strut{}%
+        \labelcol{#1}%
+        \vbox{\hbox to0.3\hsize{#2\hfill}}%
+        \vbox{\hbox to\wlcolsize{\hfill{}#3\hfill}}%
+        \vbox{\hbox to\wlcolsize{\hfill{}#4\hfill}}%
+        \vbox{\hbox to\unitcolsize{\hfill{}#5}}%
+        \unitcol{#6}%
+    }
+}
+
+% Energetická bilance
+\newdimen\ebcolsize
+\ebcolsize=0.99\hsize
+\advance\ebcolsize by-\unitcolsize
+\def\ebrow#1#2#3{%
+    \rowbegin\hbox{\strut{}%
+        \vbox{\hbox to\ebcolsize{#1\hfill{}#2}}%
+        \unitcol{#3}%
+    }
+}
+
+% vysvětlení zkratky
+\def\abbr#1:#2.{\itembull {\bf #1:} #2.}
+%\def\abbr#1:#2.{\hbox{\vtop{\hbox to0.15\hsize{\bf #1:}}\vtop{\hbox to 0.85\hsize{\vbox{\noindent\strut{}#2\strut\hfill}}}}\par}
+    
+% --- Definice fyzikálních jednotek ---
+
+\def\unittempcoef{$\rm\%K^{-1}$}
+\def\deg{\raise.5ex\hbox{$\circ$}}
+\def\degC{$\rm ^\circ C$}
+    
+\def\blankpage{
+    \hskip\hsize
+    \nopagenumbers
+    \eject
+}
+    
+{% endraw %}
+
+{{ content }}
+{{ schemas }}
+
+{% raw %}
+    \bye
+{% endraw %}

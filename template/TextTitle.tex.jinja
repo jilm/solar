@@ -1,0 +1,10 @@
+{
+    {% raw %}
+    \def\trow#1#2{\hbox{\keycell{#1}\valuecell{#2}}}
+    {% endraw %}
+
+    \trow{Investor:}{ {{ document.project.investor.get_name_full() }} }
+    \trow{Adresa:}{ {{ form_address(document.project.investor.address)  }} }
+    \rowdelim
+    \trow{Vypracoval:}{ {{ document.get_author().get_name_full() }} }
+}

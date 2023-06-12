@@ -1,0 +1,568 @@
+
+{% macro param_tab_row(label, value='', unit='') -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
+{%- endmacro %}
+
+{% macro string2() -%}
+    Všechny panely budou propojeny do série do dvou stringů.
+    Parametry těchto stringů jsou uvedeny v tabulce \cite[tbl:string].
+{%- endmacro %}
+
+{% macro document_title(chapter, title) -%}
+    \tit {{ chapter }} {{ title }}
+    \hrule
+    \vskip 3ex
+    \noindent\hfil{\typosize[14/16]\it Fotovoltaická elektrárna }\par
+    \vskip 2ex
+    \noindent\hfil{\typosize[14/16]\it Projekt elektro }\par
+    \vskip 48pt
+{%- endmacro %}
+
+{% macro title_page_begin() %}
+    \nopagenumbers
+{%- endmacro %}
+
+{% macro title_page_end() %}
+    \eject
+{%- endmacro %}
+
+{% macro table_begin() -%}
+    \tblbegin
+    \vskip 1ex\relax\par
+    %{\localcolor\Red\hrule}
+{%- endmacro %}
+
+{% macro table_end(label, title) -%}
+    {\localcolor\Red\hrule}
+    \vskip 1ex\relax\par
+    \tblend{ {{ label }} }{ {{ title }} }
+{% endmacro %}
+
+{% macro title_box(project) -%}
+    \typosize[12/16]
+    \vfill
+    \titleboxrow{Investor:}{ {{ project.name }} }
+    \titleboxrow{Adresa:}{ {{ project.address1 }} }
+    \titleboxrow{}{ {{ project.address2 }} }
+    \rowdelim
+    \titleboxrow{Objednatel:}{e.on}
+    \titleboxrow{Adresa:}{F. A. Gerstnera 2151/6}
+    \titleboxrow{}{ 370 01 České Budějovice}
+    \rowdelim
+    \titleboxrow{Zpracovatel:}{ST Alternative Energy s.r.o.}
+    \titleboxrow{Adresa:}{Ocelářská 1354/35}
+    \titleboxrow{}{190 00 Praha 9}
+    \titleboxrow{ID:}{ {{ project.id }} }
+    \titleboxrow{Vypracoval:}{ {{ project.author }} }
+    \titleboxrow{Kontroloval:}{ {{ project.checked_by }} }
+    \titleboxrow{Schválil:}{ {{ project.approved_by }} }
+    \titleboxrow{Datum:}{\issue}
+    \rowdelimred
+    \titleboxrow{Arch. číslo:}{ \bf{} {{ project.id }}+D.1.4.1.1}
+    \titleboxrow{Listů:}{ \bf{}\the\lastpage}
+    \titleboxrow{Revize:}{\bf{} {{ project.revision }} }
+    \rowdelimred
+{%- endmacro %}
+
+{% macro title_page(project) -%}
+    {{ title_page_begin() }}
+    {{ document_title(chapter='D.1.4.1.1', title='Technická zpráva') }}
+    {{ title_box(project=project) }}
+    {{ title_page_end() }}
+{%- endmacro %}
+
+{% macro param_row_3(label, value, unit) -%}
+    \valuerowthree{ {{ label }} }{ {{ "{:.1f}".format(value[0]) }} }{ {{ "{:.1f}".format(value[1]) }} }{ {{ "{:.1f}".format(value[2]) }} }{ {{ unit }} }
+{%- endmacro %}
+
+{% macro string1(project) -%}
+    Všechny panely budou propojeny do série do jednoho stringu.
+    Parametry stringu jsou v tabulce \ref[tbl:string]
+    
+    \tblbegin
+    \rowdelimred
+    \valuerowthree{Teplotní rozsah:}{ {{ project.pv["temp"][0] }} }{ {{ project.pv["temp"][1]}} }{ {{ project.pv["temp"][2] }} }{\degC}
+    \rowdelim
+    \valuerowthree{Napětí naprázdno $U_{OC}$:}{ {{ "%.0f" | format(project.pv["uoc"][0] * project.s1a_nr) }} }{ {{ "%.0f" | format(project.pv["uoc"][1] * project.s1a_nr) }} }{ {{ "%.0f" | format(project.pv["uoc"][2] * project.s1a_nr) }} }{V}
+    \rowdelim
+    \valuerow{Počet panelů $n$:}{ {{ project.s1a_nr }} }{ks}
+    \rowdelim
+    \valuerow{Orientace:}{ {{ "%.0f" | format(project.s1a_azimuth) }} }{\deg}
+    \rowdelim
+    \valuerow{Sklon:}{ {{ "%.0f" | format(project.s1a_elev) }} }{\deg}
+    \rowdelimred
+    \tblend{tbl:string}{Parametry stringu.}
+{%- endmacro %}
+
+{% macro string2(project) %}
+    Všechny panely budou propojeny do série do dvou stringů.
+    Parametry stringů jsou v tabulce \ref[tbl:string].
+    
+    {{ table_begin() }}
+    \rowdelimred
+    \valuerow{\bf{}String 1}{}{}
+    \rowdelim
+    \valuerowthree{Teplotní rozsah:}{ {{ project.pv["temp"][0] }} }{ {{ project.pv["temp"][1]}} }{ {{ project.pv["temp"][2] }} }{\degC}
+    \rowdelim
+    \valuerowthree{Napětí naprázdno $U_{OC}$:}{ {{ "%.0f" | format(project.pv["uoc"][0] * project.s1a_nr) }} }{ {{ "%.0f" | format(project.pv["uoc"][1] * project.s1a_nr) }} }{ {{ "%.0f" | format(project.pv["uoc"][2] * project.s1a_nr) }} }{V}
+    \rowdelim
+    \valuerow{Počet panelů $n$:}{ {{ project.s1a_nr }} }{ks}
+    \rowdelim
+    \valuerow{Orientace:}{ {{ "%.0f" | format(project.s1a_azimuth) }} }{\deg}
+    \rowdelim
+    \valuerow{Sklon:}{ {{ "%.0f" | format(project.s1a_elev) }} }{\deg}
+    \rowdelim
+    \valuerow{\bf{}String 2}{}{}
+    \rowdelim
+    \valuerowthree{Napětí naprázdno $U_{OC}$:}{ {{ "%.0f" | format(project.pv["uoc"][0] * project.s2_nr) }} }{ {{ "%.0f" | format(project.pv["uoc"][1] * project.s2_nr) }} }{ {{ "%.0f" | format(project.pv["uoc"][2] * project.s2_nr) }} }{V}
+    \rowdelim
+    \valuerow{Počet panelů $n$:}{ {{ project.s2_nr }} }{ks}
+    \rowdelim
+    \valuerow{Orientace:}{ {{ "%.0f" | format(project.s2_azimuth) }} }{\deg}
+    \rowdelim
+    \valuerow{Sklon:}{ {{ "%.0f" | format(project.s2_elev) }} }{\deg}
+    \rowdelim
+    \tblend{tbl:string}{Parametry stringů.}
+{% endmacro %}
+
+{{ title_page(project=project) }}
+\blankpage
+
+\nonum\notoc\sec Změnový list
+
+\vskip1ex
+\rowdelimred
+{%- for key, hr in project.history | sort(attribute="1.date") %}
+    \hprow{ {{ "abcdefghijklmnopqrstuvwxyz"[loop.index0] }} }{\date{{ hr.date }} }{ {{ hr.message }} }
+    {% if loop.last %}
+        \rowdelimred
+    {% else %}
+        \rowdelim
+    {% endif %}
+{% endfor -%}
+
+\vfill
+\eject
+\blankpage
+
+%\footline={\hss \rm \thefontsize[10]\the\pageno/\the\lastpage \hss}
+\nopagenumbers % suppress
+\headline={\ifodd\pageno\rightheadline \else\leftheadline\fi}
+\def\rightheadline{\tenrm\it\archnr\hfill\folio/\the\lastpage}
+\def\leftheadline{\tenrm\it\folio/\the\lastpage \hfil\it TECHNICKA ZPRAVA}
+\voffset=2\baselineskip
+
+\nonum\notoc\sec Obsah
+
+\maketoc
+
+%\nonum\wtotoc0\rm{D.1.4.1~Projektová dokumentace -- textová část}
+
+\sec Zkratky
+
+    \abbr DC:Označení stejnosměrného napětí nebo proudu.
+    \abbr DS:Distribuční soustava.
+    \abbr FV:Fotovoltaika, fotovoltaický.
+    \abbr FVE:Fotovoltaická elektrárna.
+    \abbr FVE-R:Fotovoltaický rozváděč.
+    \abbr HDO:Hromadné dálkové ovládání.
+    \abbr HDR:Hlavní domovní rozváděč.
+    \abbr HDS:Hlavní domovní (pojistková / kabelová) skříň.
+    \abbr HDV:Hlavní domovní vedení; jedná se o vedení z {\bf HDS} do {\bf ER}.
+    \abbr HOP:Hlavní ochranná přípojnice.
+    \abbr NT:Nízký tarif.
+    \abbr OM:Odběrné místo.
+    \abbr PDS:Provozovatel distribuční soustavy.
+    \abbr ER:Elektroměrový rozváděč -- elektrické zařízení obsahující konstrukci a přípravky pro montáž měřícího zařízení a souvisejících přístrojů.
+    \abbr OZE:Obnovitelné zdroje energie.
+    \abbr TUV:Teplá užitková voda.
+   %SPD: Přerpěťové ochranné zařízení (přepěťová ochrana).
+    \abbr Wallbox:domácí nabíjecí stanice pro elektromobil.
+    \abbr Wp:(wattpeak) výkon panelu za podmínek daných normou (STC).
+    \abbr STC:(Standard Test Condition) standardní testovací podmínky, za nichž jsou měřeny charakteristiky fotovoltaických panelů a článků,
+    \abbr MPP:(Maximum Power Point) bod maximálního výkonu; pracovní bod, ve kterém dodává fotovoltaický panel maximální výkon; MPP se mění v závislostí na intenzitě dopadajícího slunečního záření a na teplotě panelu.
+    \abbr MPPT:(Maximum Power Point Tracker) sledovač bodu maximálního výkonu; zařízení, které zvyšuje výnos energie tím, že zajišťuje, aby fotovoltaický panel pracoval stále v blízkosti bodu maximálního výkonu; MPPT je obvykle součástí střídače nebo regulátoru nabíjení, může však být i samostatně.
+    \abbr BMS:Battery Management System; Každý jednotlivý článek lithiové baterie má svou vlastní malou "nabíječku", která hlídá napětí svého článku a stará se o to, aby napětí na každém jednotlivém článku v průběhu nabíjení nepřekročilo 4,2 V (tolerance 0,05V! ), při vybíjení zase nepokleslo pod 3,0V a nedošlo tak ke zničení článku.
+    \abbr SoH:State of Health (týká se naterií).
+    \abbr PPDS:Pravidla používání distribuční soustavy.
+
+\sec Předmět
+
+    Předmětem projektu je dodávka a instalace malé fotovoltaické
+    elektrárny. Podle \cite[rfg16] se jedná o elektrárnu klasifikace
+    A1. {{ project.pv_nr }} solárních panelů typu
+    {{ project.pv["man"] }} {{ project.pv["type"] }} o jednotkovém
+    maximálním výkonu {{ project.pv["pmax-nom"] }}\sskip{}Wp a celkovém
+    instalovaném výkonu {{ project.pv_p_sum }}\sskip{}Wp bude
+    uchyceno na střeše rodinného domu na adrese: {{ project.address1 }},
+    {{ project.address2 }}. Elektrárna je určena především ke krytí
+    vlastní spotřeby rodinného domu.
+    Více informací o energetické bilanci elektrárny najdete v kapitole
+    \ref[kap:vb] a v příloze B. Další hlavní komponenty elektrárny jsou:
+
+    \itembull Střídač, více v kapitole \ref[kap:inv].
+    
+    
+    \itembull DC rozváděč {\tt DC-FVE-R}, více viz \ref[kap:dcfver].
+    \itembull AC rozvaděč {\tt AC-FVE-R}, více viz \ref[kap:acfver].
+    {%- if project.bat -%}
+        \itembull Baterie, podrobnosti viz \ref[kap:bat].
+    {%- endif -%}
+    {%- if project.watt -%}
+        \itembull Wattrouter, podrobnosti viz \ref[kap:watt].
+    {%- endif -%}
+    {%- if project.wall -%}
+        \itembull Wallbox, podrobnosti viz \ref[kap:wall].
+    {%- endif -%}
+    
+    \par
+    {{ project.scope }}
+ 
+
+\sec Popis současného stavu
+
+    Rodinný dům na adrese: \addressa{}, \addressb{}.
+    
+    Elektroměrový rozváděč, dále jen ER
+    {%- if project.er_access == "ok" %}
+        ~je přístupný pracovníkům DS na hranici pozemku.
+    {% else -%}
+        ~není přístupný pracovníkům DS dle pravidel PDS a bude nutné ho přemístit.
+    {% endif -%}
+    ER obsahuje HDO.
+    
+    Na střeše je hromosvod.
+    
+    {{ project.descr }}
+
+\sec Projekční východiska
+
+    \itembull Roční spotřeba el. energie: {{ project.consume }} kWh.
+    \itembull Solární panely: {{ project.pv["man"] }} {{ project.pv["type"] }}.
+    \itembull Střídač: {{ project.invert["man"] }} {{ project.invert["type"] }}.
+    
+    {% if project.hdr_position %}
+        \itembull {{ project.hdr_position }}
+    {% endif %}
+    {% if project.fve_position %}
+        \itembull {{ project.fve_position }}
+    {% endif %}
+    {% if project.er_fc %}
+        \itembull Jistič před elektroměrem: B{{ project.er_fc }}A.
+    {% endif %}
+
+\sec Podklady
+
+    %\usebib/s (simple) normy
+    \usebibtex{../normy}{plain}
+
+\sec Technické řešení
+
+    \secc Dálkové ovládání
+
+    Podle \cite[rfg16, ppds22] musí elerktrárna typu A1 reagovat na signály
+    dálkové regulace výkonu ve dvou hladinách a to 0~\% a 100~\%. K tomuto
+    slouží relé {\tt -KF3} které je svými kontakty připojeno ke vstupu
+    shut-down měniče {\tt -TA}. Relé je spínáno pomocí HDO a slouží jako
+    galvanické oddělení.
+
+    \secc Solární panely
+    
+    Parametry použitých solárních panelů jsou uvedeny
+    v tabulce \ref[tbl:pv].
+
+    \tblbegin
+    {{ project.pv["param-table"] }}
+    \tblend{tbl:pv}{Parametry solárních panelů.}
+
+    Kde parametry pro teplotu {{ project.pv["temp"][1] }}$^\circ$C jsou převzaty z \cite[] a parametry
+    pro teplotu {{ project.pv["temp"][0] }}$^\circ$C a {{ project.pv["temp"][2] }}$^\circ$C jsou vypočteny podle následujících
+    vztahů.
+
+    Napětí naprázdno:
+    \penalty1000
+    $$U_{OC|T} = U_{OC} (1 + \beta_{U_{OC}} (T - 25) / 100).$$
+
+    Zkratový proud:
+    \penalty1000
+    $$I_{SC|T} = I_{SC} (1 + \beta_{I_{SC}} (T - 25) / 100).$$
+
+    Výkon:
+    \penalty1000
+    $$P_{MAX|T} = P_{MAX} (1 + \beta_{P_{MAX}} (T - 25) / 100).$$
+
+    Kde: $T$ je teplota panelu, $U_{OC}$, $I_{SC}$ a $P_{MAX}$ jsou hledané parametry.
+
+    \secc Rozdělení do stringů
+
+    {% if project.string_nr == 1 %}
+        {{ string1(project=project) }}
+    {% else %}
+        {{ string2(project=project) }}
+    {% endif %}
+
+    \label[kap:dcfver]\secc Stejnosměrný rozváděč
+    
+    Kabely fotovoltaických panelů vstupují nejdříve do stejnosměrného
+    (dále jen {\tt DC-FVE-R}) rozváděče, kde jsou připojeny na pojistkové odpojovače s pojistkami
+    Gg~12A a je zde svodič přepětí. Poté jsou kabely zapojeny do vstupu střídače.
+    Komponenty rozváděče jsou uvedeny v tabulce \ref[tbl:DC-FVE-R:vv],
+    schéma zapojení viz D.1.4.2/3.
+
+    \tblbegin
+    \rowdelimred
+    \vvrow{=PV1-XD}{Svorka}{}{6\mmsq}{2}{ks}
+    \rowdelim
+    \vvrow{=PV1-FC}{Pojistkový odpojovač}{NOARK}{Ex9FP 2P 30A}{1}{ks}
+    \rowdelim
+    \vvrow{=PV1-FA}{Svodič přepětí}{NOARK}{Ex9UEP1+2 6.25 2P 750}{1}{ks}
+    {% if project.string_nr > 1 %}
+    \rowdelim
+    \vvrow{=PV2-XD}{Svorka}{}{6\mmsq}{2}{ks}
+    \rowdelim
+    \vvrow{=PV2-FC}{Pojistkový odpojovač}{NOARK}{Ex9FP 2P 30A}{1}{ks}
+    \rowdelim
+    \vvrow{=PV2-FA}{Svodič přepětí}{NOARK}{Ex9UEP1+2 6.25 2P 750}{1}{ks}
+    {% endif %}
+    \rowdelimred
+    \tblend{tbl:DC-FVE-R:vv}{Komponenty DC-FVE-R.}
+
+
+    \label[kap:inv]\secc Střídač
+    
+        Parametry použitého střídače jsou uvedeny v tabulce \ref[tbl:invert]
+
+        \tblbegin
+        {{ project.inv_param_tab }}
+        \tblend{tbl:invert}{Parametry použitého střídače.}
+ 
+    \label[kap:bat]\secc Baterie
+
+    {{ tz_batery }}
+    
+    {% if project.wall %}
+    
+    \label[kap:wall]\secc Wallbox
+    
+    Nabíječka elektromobilů; wallbox s označením {\tt =WALL-TA} bude umístěna v garáži. Spolu s ní bude rozváděč
+    AC-FVE-R osazen i tzv. Load Balancerem s označením {\tt =WALL-BE}. Wallbox a Load Balancer musí být propojeni
+    pomocí ethernetové sítě. Wallbox bude umístěn v garáži.
+    
+    {% endif %}
+
+    {% if project.deksoft %}
+    
+    \label[kap:vb]\secc Výkonová bilance
+    
+        Souhrná výkonová bilance elektrárny je uvedena v tabulce \ref[tbl:vykonova-bilance].
+        Podrobné výsledky výpočtu provedené programem DEKSOFT jsou v příloze této tech. zprávy.
+    
+        \tblbegin
+        \rowdelimred
+        \ebrow{Celková spotřeba elektrické energie:}{ {{ "{:.0f}".format(project.deksoft[0]) }} }{kWh}
+        \rowdelim
+        \ebrow{Celková využitelná produkce el. energie z FVE v budově:}{ {{ "{:.0f}".format(project.deksoft[1]) }} }{kWh}
+        \rowdelim
+        \ebrow{Celková produkce el. energie dodaná do distribuční soustavy:}{ {{ "{:.0f}".format(project.deksoft[2]) }} }{kWh}
+        \rowdelim
+        \ebrow{Celková produkce el. energie z FVE:}{ {{ "{:.0f}".format(project.deksoft[3]) }} }{kWh}
+        \rowdelim
+        \ebrow{Celkové množství el. energie odebrané z distribuční saoustravy:}{ {{ "{:.0f}".format(project.deksoft[4]) }} }{kWh}
+        \rowdelim
+        \ebrow{Procento využití celkové produkce FVE pro krytí spotřeby v budově:}{ {{ "{:.0f}".format(project.deksoft[5]*100.0) }} }{\%}
+        \rowdelim
+        \ebrow{Procento pokrytí vlastní spotřeby pomocí FVE:}{ {{ "{:.0f}".format(project.deksoft[6]*100.0) }} }{\%}
+        \rowdelimred
+        \tblend{tbl:vykonova-bilance}{Výkonová bilance elektrárny.}
+
+    {% endif %}
+    
+    \secc Kabeláž
+    
+    FV panely budou vzájemně propojeny do série pomocí kabelů typu H1Z2Z2-K o průřezu 6~\mmsq.
+    Kabely jsou dvouplášťové a mají jednožilové jádro.
+    Kabely jsou navrženy speciálně pro použití
+    v~solárních elektrárnách. Díky zesíleným izolačním a plášťovým materiálům
+    je zaručena odolnost proti mechanickému namáhání a namáhání okolním
+    prostředím. Kromě toho jsou kabely odolné vůči zkratu, bez halogenů
+    a~odolné vůči UV záření. Jsou vhodné pro použití v suchých
+    i~vlhkých místnostech, venku pod přímým slunečním zářením. Předpokládaná
+    životnost kabelu je 25 let.
+                                                                                          
+    Kabely budou vedeny flexibilní chráničkou jako další ochranou před UV
+    zářením a~mechanickým poškozením.
+
+    {{ project.dc_trasa }}
+
+    \secc Určení druhu prostoru --- vnější vlivy
+                                                 
+    Pro účely projektu byly dle \cite[csn332000551] komisí projektanta stanoveny tyto vlivy:
+                                                 
+    \itembull Uvnitř RD: prostředí normální.
+    \itembull Venkovní části RD: AB8, AQ2, AR2, AT2, AU2.
+                                            
+    \secc Napěťová soustava
+                                  
+    V projektu jsou použity následující napěťové soustavy:
+                                              
+    \itembull HDS a ER: 3/PEN AC 400/230V TN-C 50\,Hz\par
+    \itembull HDR: 3/N+PE AC 400/230V TN-C-S 50\,Hz\par
+    \itembull FV Panely: do 1500V DC/IT
+                                                           
+    \itembull Baterie: do 1500V DC/IT
+                                  
+    
+    \secc Ochrana před úrazem el. proudem
+                                       
+    \noindent{\bf Základní ochrana}
+                                                   
+    \itembull Ochrana kryty nebo přepážkami.
+    \itembull Ochrana izolací.
+                                                                
+    \noindent{\bf Ochrana při poruše}
+                                                          
+    \itembull Ochrana automatickým odpojením od zdroje v síti TN.
+    \itembull Doplňková ochrana pospojováním neživých částí současně příst. dotyku.
+
+    \label[kap:acfver]\secc AC fotovoltaický rozváděč
+
+    AC Fotovoltaický Rozváděč, funguje jako rozhraní mezi
+    střídačem, DS a elektroinstalací domu.
+    Jsou zde osazeny prvky elektroinstalace, nezbytné pro chod elektrárny.
+    Jedná se zejména o tzv. rozpadové
+    místo (stykač {-QA1}), stykače a reléovou logiku pro záskok rezervního
+    napájení v případě výpadku napájení z DS (stykače {\tt -QA1}, {\tt -QA2},
+    {\tt -QA3}, {\tt -KF1}, {\tt -KF2}). Dále pak jištění a relé {\tt -KF5},
+    které je určeno pro dálkové odpojení elektrárny od DS prostřednictvím HDO.
+    
+    Komponenty jsou uvedeny v tabulce: \ref[tbl:AC-FVE-R:vv]
+
+    V případě výpadku DS nedojde automaticky k přepojení celé elektroinstalace
+    domu na eps výstup střídače, protože v takovém případě by nejspíše došlo k
+    přetížení eps výstupu. Místo toho musí obsluha vypnout energeticky náročné
+    spotřebiče a okruhy a stisknout tlačítko {\tt -SF1} v AC-FVE-R.
+    Po obnovení napájení z DS už dojde k přepnutí na DS automaticky.
+    Obsluha jen musí nahodit zpět vypnuté spotřebiče a okruhy.
+
+    \tblbegin
+    \vskip 1ex\relax\par
+    \rowdelimred
+    \vvrow{-SF1}{Hlavní vypínač}{NOARK}{Ex9BI 4P 40A}{1}{ks}
+    \rowdelim
+    \vvrow{-FC1}{Jistič}{NOARK}{Ex9BH 4P B20}{1}{ks}
+    \rowdelim
+    \vvrow{-FC2}{Jistič}{NOARK}{Ex9BH 4P B16}{1}{ks}
+    \rowdelim
+    \vvrow{-FC3}{Jistič}{NOARK}{Ex9BH 3P B2}{1}{ks}
+    \rowdelim
+    \vvrow{-FC4}{Jistič}{NOARK}{Ex9BH 1P B2}{1}{ks}
+    \rowdelim
+    \vvrow{-QA1}{Stykač}{NOARK}{Ex9CH40 40 230V 50Hz}{1}{ks}
+    \rowdelim
+    \vvrow{-QA2}{Stykač}{NOARK}{Ex9CH40 40 230V 50Hz}{1}{ks}
+    \rowdelim
+    \vvrow{-QA3}{Stykač}{NOARK}{Ex9CH25 40 230V 50Hz}{1}{ks}
+    \rowdelim
+    \vvrow{-FA}{Proudový chránič}{NOARK}{Ex9-H 4P 40A 30mA G}{1}{ks}
+    \rowdelim
+    \vvrowlong{-BE}{Proudový transformátor}{SOLAX}{CT}{1}{ks}
+    \rowdelim
+    \vvrow{-KF1}{Monitor. relé}{NOARK}{Ex9JP-12 AC230V}{1}{ks}
+    \rowdelim
+    \vvrowlong{-KF2}{Relé se zpožděným přítahem}{NOARK}{Ex9TR DO 1CO}{1}{ks}
+    \rowdelim
+    \vvrow{-KF3}{Relé}{NOARK}{Ex9CH20 01 230V}{1}{ks}
+    \rowdelim
+    \vvrow{-KF4}{Relé}{NOARK}{Ex9CH20 20 230V}{1}{ks}
+    \rowdelim
+    \vvrow{-KF5}{Relé}{NOARK}{Ex9CH20 10 230V}{1}{ks}
+    \rowdelim
+    \vvrow{-PF}{Signálka}{NOARK}{Ex9PD1y 230V}{1}{ks}
+    \rowdelim
+    \vvrow{-SF}{Tlačítko}{EATON}{}{1}{ks}
+    \rowdelimred
+    \tblend{tbl:AC-FVE-R:vv}{Komponenty AC-FVE-R.}
+
+    \secc Ochrany měniče --- Řízení činné a jalové energie
+          
+    \settabs 6\columns
+    Dle prohlášení dovozce \cite[gbc] má použitý střídač
+    SOLAX X3-HYBRID-8.0-D nastavení ochran tak, jak je uvedeno
+    v tabulce \ref[tbl:invert-protect]. Řízení jalového výkonu $Q(U)$:
+
+    \+ $X_1-0,94$, & $X_2-0,97$, & $X_3-1,05$, & $X_4-1,08$, & časová konstanta 5\,s.\cr
+    \noindent{}Přizpůsobení činného výkonu $P(U)$:
+    \settabs 5\columns
+    \+ $U_1/U_n-109\%$, & $U_1/U_n-110\%$, & $U_3/U_n-111\%$, & časová konstanta 5\,s.\cr
+    \noindent{}Snížení činného výkonu při nadfrekvenci $P(f)$:
+\itembull Pokud se měnič automaticky neodpojí při 50{,}2\,Hz snižovat okamžitý činný výkon gradientem 40\,\% na Hz.
+
+\itembull Při $50,2\,{\rm Hz} < f_s < 51,5\,{\rm Hz}$.
+
+\itembull V rozsahu $47,5\,{\rm Hz} < f_s < 50,2\,{\rm Hz}$ žádná omezení.
+
+\itembull Při $f_s < 47,5\,{\rm Hz}$ a $f_s = 51,5\,{\rm Hz}$ odpojení od sítě.
+
+
+    \tblbegin
+    \vskip 1ex\relax\par
+    \rowdelimred
+    \invprotect{Přepětí 1. stupeň}{230}{V$+10$\,\%}{3{,}0}{s}
+    \rowdelim
+    \invprotect{Přepětí 2. stupeň}{230}{V$+15$\,\%}{1{,}0}{s}
+    \rowdelim
+    \invprotect{Přepětí 3. stupeň}{230}{V$+20$\,\%}{0{,}1}{s}
+    \rowdelim
+    \invprotect{Podpětí}{230}{V$-15$\,\%}{1{,}5}{s}
+    \rowdelim
+    \invprotect{Nadfrekvence}{52{,}0}{Hz}{0{,}5}{s}
+    \rowdelim
+    \invprotect{Podfrekvence}{47{,}5}{Hz}{0{,}5}{s}
+    \rowdelim
+    \invprotect{Frekvence (snižování výkonu s grad. 40\%)}{$>${,}2}{Hz}{~}{~}
+    \rowdelim
+    \wholerow{Připojení výrobny po odeznění chybového stavu po 20 minutách.\hfill}
+    \rowdelimred
+    \tblend{tbl:invert-protect}{Nastavení ochran měniče.}
+
+
+\sec Bezpečnost a zdraví při práci
+
+    Pracovníci provádějící práce na elektrickém zařízení
+    budou mít potřebnou kvalifikaci dle nařízení vlády
+    č.~194/2022~Sb., o~požadavcích na odbornou způsobilost
+    k~výkonu činnosti na elektrických zařízeních a na
+    odbornou způsobilost v elektrotechnice.
+
+    Před uvedením do provozu bude provedena výchozí revize.
+
+    Rozváděče: ER, HDR, FVE-R budou opatřeny varovnými tabulkami:
+    \itembull Pozor! Elektrické zařízení, nehas vodou ani pěnovými přístroji.
+    \itembull Pozor! Zpětný proud.
+    \itembull Pozor! Pod napětím i při vypnutém jističi.
+
+
+\sec Vliv stavby na životní prostředí
+
+
+    Stavba nemá negativní vliv na životní prostředí, nezpůsobuje hluk,
+    vibrace, prach nebo ne\-bez\-peč\-né zplodiny. Při realizaci stavby,
+    při výměně baterií, při demontáži panelů musí být dodrženy platné
+    požadavky na odpadové hospodářství, tzn. s odpady musí být naloženo
+    v souladu s místní obecní vyhláškou.
+
+    Dle zákona č. 7/2005Sb. je výrobce nebo dovozce povinen odebírat
+    zpět použité baterie.
+
+    {# for sch in project.schemas %}
+        \def\schemaname{ {{ sch.name }} }
+        \def\page{ {{ loop.index }} }
+        \def\pages{ {{ loop.length }} }
+        {{ sch.get_tikz(project.components) }}
+    {% endfor #}
+
+%\global\advance\secnum by1\relax
+\edef\thesecnum{A}\let\thetocnum=\thesecnum
+\wtotoc1\rm{Schemata}
+%\wtotoc2\rm{Jednopolové schema}

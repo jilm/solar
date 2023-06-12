@@ -1,0 +1,13 @@
+
+
+\sec Nářadí
+
+{% for tool in tools %}
+    \item {{ tool }}
+{% endfor %}
+
+\sec Postup
+
+{% for step in lib %}
+    \item {{ step.descr }}
+{% endfor %}

@@ -1,0 +1,27 @@
+% --- Metadata projektu ---
+
+\def\archnr{ {{ project.id }}+D.1.4.1.1}
+\def\name{ {{ project.name }} }
+\def\addressa{ {{ project.address1 }} }
+\def\addressb{ {{ project.address2 }} }
+\def\pvnr{ {{ project.pv_nr }} }
+\def\pvman{ {{ project.pv["man"] }} }
+\def\pvtype{ {{ project.pv["type"] }} }
+\def\invman{ {{ project.invert["man"] }} }
+\def\invtype{ {{ project.invert["type"] }} }
+\def\batman{ SOLAX }
+\def\battype{ TP }
+\def\batnr{ 2 }
+\def\batcap{ {{ project.bat_capacity }} }
+\def\rev{ {{ project.revision }} }
+\def\phase{ JPS }
+\def\pvsump{ {{ project.pv_p_sum }} }
+\def\watman{}
+\def\wattype{}
+\def\beman{}
+\def\betype{}
+\def\issue{\date{{ project.get_issue_date() }}}
+\def\partname{-}
+\def\page{1}
+\def\pages{1}
+\def\schemaname{ {{ schema_name }} }

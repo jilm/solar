@@ -1,0 +1,63 @@
+
+
+
+
+	Baterie v systému fotovoltaické elektrárny slouží převážně k vyrovnání 
+	rozdílů mezi výrobou a spotřebou během dne. Ve chvílích, kdy okamžitá
+	výroba el. energie je vyšší než okamžitá spotřeba, rozdíl je ukládán
+	do baterie. Ve chvílích, kdy spotřeba je vyšší než vlýroba, rozdíly jsou
+	kryty čerpáním energie z baterií.
+
+	Parametry použitých baterií jsou uvedeny v tabulce \ref[tbl:bat].
+
+{% if bat["family"] == "T58" %}
+	\tblbegin
+	    \rowdelimred
+	    \valuerow{Výrobce:}{ {{ bat["man"]}} }{}
+	    \rowdelim
+	    \valuerow{Typové označení:}{ {{ bat["type"] }} }{}
+	    \rowdelim
+	    \valuerow{Celková kapacita:}{ {{ bat["capacity"] }} }{kWh}
+	    \rowdelim
+	    \valuerow{Počet modulů:}{ {{ bat["nr"] }} }{}
+	    \rowdelim
+	    \valuerow{Hmotnost:}{ $72,2 + {{ bat["nr"] - 1 }} \times 68,5$ }{kg}
+	    \rowdelim
+	    \valuerow{Rozměry $W\times D\times H$ master:}{ 474 \x 193 \x 706 }{mm}
+	    \valuerow{slave:}{ 474 \x 193 \x 647 }{mm}
+	    \rowdelim
+	    \valuerow{Napětí $U$:}{ {{ bat["voltage"][0] }} -- {{ bat["voltage"][1] }} }{V}
+	    \rowdelim
+	    \valuerow{Doporučený nabíjecí / vybíjecí proud $I$:}{ {{ bat["i-char-rec"] }} }{A}
+	    \rowdelim
+	    \valuerow{Maximální nabíjecí / vybíjecí proud $I_{MAX}$:}{ {{ bat["i-char-max"] }} }{A}
+	    \rowdelimred
+	\tblend{tbl:bat}{Parametry použitých baterií.}
+
+{% endif %}
+
+{% if bat["family"] == "T30" %}
+    \tblbegin
+        \rowdelimred
+        \valuerow{Výrobce:}{ {{ bat["man"]}} }{}
+        \rowdelim
+        \valuerow{Typové označení:}{ {{ bat["type"] }} }{}
+        \rowdelim
+        \valuerow{Celková kapacita:}{ {{ bat["capacity"] }} }{kWh}
+        \rowdelim
+        \valuerow{Počet modulů:}{ {{ bat["nr"] }} }{}
+        \rowdelim
+        \valuerow{Hmotnost:}{ $7,5 + {{ bat["nr"] }} \times 103$ }{kg}
+        \rowdelim
+        \valuerow{Rozměry $W\times D\times H$ master:}{ 482 \x 173 \x 153 }{mm}
+        \valuerow{slave:}{ 482 \x 471 \x 153 }{mm}
+        \rowdelim
+        \valuerow{Napětí $U$:}{ {{ bat["voltage"][0] }} -- {{ bat["voltage"][1] }} }{V}
+        \rowdelim
+        \valuerow{Doporučený nabíjecí / vybíjecí proud $I$:}{ {{ bat["i-char-rec"] }} }{A}
+        \rowdelim
+        \valuerow{Maximální nabíjecí / vybíjecí proud $I_{MAX}$:}{ {{ bat["i-char-max"] }} }{A}
+        \rowdelimred
+    \tblend{tbl:bat}{Parametry použitých baterií.}
+
+{% endif %}

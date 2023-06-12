@@ -1,0 +1,10 @@
+{% macro legend_row(x, y, text) %}
+    \draw ( {{ x }} , {{ y }} ) node [anchor=west] { {{ text }} };
+{% endmacro %}
+
+\draw (300, -30) node [anchor=west] {Legenda:};
+\draw (300, -33) -- (350, -33);
+
+{% for row in legend %}
+    {{ legend_row(300, loop.index * -6 - 36, row) }}
+{% endfor %}

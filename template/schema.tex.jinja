@@ -1,0 +1,31 @@
+
+\vfill\eject
+\typosize[10/12]
+\pdfpagewidth 420 true mm\relax
+\pdfpageheight 297 true mm\relax
+\hoffset=-33mm\relax
+\voffset=-26mm\relax
+\hsize 420 true mm\relax
+\nopagenumbers
+
+% --- Metainformace schematu ---
+
+% \def\name{}
+% \def\revision{ {{ revision }} }
+% \def\addressa{}
+% \def\addressb{}
+% \def\issue{}
+\def\archnr{ {{ project.id }} }
+\def\page{ {{ page_no + 1 }} }
+\def\schemaname{ {{ title }} }
+
+
+\tikzpicture[x=1mm,y=1mm]
+
+%\global\advance\secnum by1\relax
+\edef\thesecnum{A.\page}\let\thetocnum=\thesecnum
+{\wtotoc2\rm{\schemaname}}
+
+{{ content }}
+
+\endtikzpicture
